@@ -513,16 +513,51 @@ var capitalizeFirst = function(array) {
 // };
 // nestedEvenSum(obj1); // 10
 var nestedEvenSum = function(obj) {
+	var sum = 0;
+	for(var key in obj){
+		if (obj[key] % 2 === 0){
+			sum += obj[key];
+		}
+		if (typeof obj[key] === 'object'){
+			sum += nestedEvenSum(obj[key]);
+		}
+	}
+	return sum;
 };
 
 // 30. Flatten an array containing nested arrays.
 // flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(array) {
+	if (array.length === 1){
+		if (Array.isArray(array[0])){
+			return flatten(array[0]);
+		}
+		return [array[0]];
+	} else {
+		var result = flatten(array.slice(1));
+		if (Array.isArray(array[0])){
+			result = [flatten(array[0])].concat(result);
+		} else {
+			result = [array[0]].concat(result);
+		}
+		return result;
+	}
 };
 
 // 31. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {p:1, o:2, t:2, a:1}
 var letterTally = function(str, obj) {
+	if (str.length === 0){
+		return {};
+	} else {
+		var result = letterTally(str.slice(1));
+		if (result[str[0]] === undefined){
+			result[str[0]] = 1;
+		} else {
+			result[str[0]]++;
+		}
+		return result;
+	}
 };
 
 // 32. Eliminate consecutive duplicates in a list. If the list contains repeated
